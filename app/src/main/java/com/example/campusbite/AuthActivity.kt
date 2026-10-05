@@ -136,12 +136,13 @@ class AuthActivity : AppCompatActivity() {
 
     private fun selectStudentTab() {
         isStaffSelected = false
-        // Dark Teal background with White text for selected Active tab
-        binding.btnTabStudent.setBackgroundColor(Color.parseColor("#005B5C"))
+
+        // Active Tab: Dark Teal background (#005B5C) with White text
+        binding.btnTabStudent.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#005B5C"))
         binding.btnTabStudent.setTextColor(Color.WHITE)
 
-        // Light Green background with Dark Teal text for unselected Inactive tab
-        binding.btnTabStaff.setBackgroundColor(Color.parseColor("#A3D9A5"))
+        // Inactive Tab: Light Green background (#E0F2F1) with Dark Teal text
+        binding.btnTabStaff.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#E0F2F1"))
         binding.btnTabStaff.setTextColor(Color.parseColor("#005B5C"))
 
         binding.tvHeaderSub.text = "Student Login"
@@ -153,12 +154,13 @@ class AuthActivity : AppCompatActivity() {
 
     private fun selectStaffTab() {
         isStaffSelected = true
-        // Dark Teal background with White text for selected Active tab
-        binding.btnTabStaff.setBackgroundColor(Color.parseColor("#005B5C"))
+
+        // Active Tab: Dark Teal background (#005B5C) with White text
+        binding.btnTabStaff.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#005B5C"))
         binding.btnTabStaff.setTextColor(Color.WHITE)
 
-        // Light Green background with Dark Teal text for unselected Inactive tab
-        binding.btnTabStudent.setBackgroundColor(Color.parseColor("#A3D9A5"))
+        // Inactive Tab: Light Green background (#E0F2F1) with Dark Teal text
+        binding.btnTabStudent.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#E0F2F1"))
         binding.btnTabStudent.setTextColor(Color.parseColor("#005B5C"))
 
         binding.tvHeaderSub.text = "Canteen Staff Login"
