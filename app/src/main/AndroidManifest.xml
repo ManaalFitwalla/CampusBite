@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusBite">
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -19,20 +20,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".AuthActivity"
             android:exported="false" />
 
-        <!-- 3. Main Screen: Opened after Login/Signup -->
+        <!-- Staff / Vendor Dashboard Screen -->
+        <activity
+            android:name=".VendorDashboardActivity"
+            android:exported="false" />
+
+        <!-- Main Screen: Opened after Login/Signup -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-        <activity android:name=".CartActivity" android:exported="false" />
-        <activity android:name=".PaymentActivity" android:exported="false" />
-        <activity android:name=".ReceiptActivity" android:exported="false" />
+
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ReceiptActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

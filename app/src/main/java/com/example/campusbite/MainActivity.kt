@@ -19,13 +19,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var foodAdapter: FoodAdapter
     private val allFoodItems = ArrayList<FoodItem>()
+    private var currentCategory = "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Handles top status bar and bottom navigation bar system paddings dynamically
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.setPadding(0, systemBars.top, 0, systemBars.bottom)
@@ -41,9 +41,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvFoodItems.layoutManager = GridLayoutManager(this, 2)
         foodAdapter = FoodAdapter(allFoodItems) { item ->
-            CartManager.addItem(item)
-            updateCartBadge()
-            Toast.makeText(this, "${item.name} added to cart!", Toast.LENGTH_SHORT).show()
+            if (item.isAvailable) {
+                CartManager.addItem(item)
+                updateCartBadge()
+                Toast.makeText(this, "${item.name} added to cart!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "${item.name} is currently Out of Stock!", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.rvFoodItems.adapter = foodAdapter
 
@@ -90,11 +94,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateCartBadge()
+        setupFoodList()
+        filterCategory(currentCategory)
     }
 
     private fun updateCartBadge() {
         val cartCount = CartManager.cartItems.size
-        // Safe check for TextView vs Navigation menu item
         val navCartView = binding.navCart
         if (navCartView is TextView) {
             navCartView.text = "🛒\nCart ($cartCount)"
@@ -131,27 +136,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFoodList() {
+        val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
         allFoodItems.clear()
-        allFoodItems.add(FoodItem(1, "Cold Coffee", 40, true, "Drinks", R.drawable.ic_coffee))
-        allFoodItems.add(FoodItem(2, "Veg Sandwich", 45, true, "Today's Special", R.drawable.ic_sandwich))
-        allFoodItems.add(FoodItem(3, "Veg Burger", 50, true, "Snacks", R.drawable.ic_burger))
-        allFoodItems.add(FoodItem(4, "Paneer Wrap", 60, true, "Snacks", R.drawable.ic_wrap))
-        allFoodItems.add(FoodItem(5, "Hakka Noodles", 70, true, "Lunch", R.drawable.ic_noodles))
-        allFoodItems.add(FoodItem(6, "Veg Thali", 80, true, "Today's Special", R.drawable.ic_thali))
-        allFoodItems.add(FoodItem(7, "Fried Rice", 65, true, "Lunch", R.drawable.ic_fried_rice))
-        allFoodItems.add(FoodItem(8, "Veg Biryani", 90, false, "Lunch", R.drawable.ic_biryani))
-        allFoodItems.add(FoodItem(9, "Samosa (2 pcs)", 25, true, "Snacks", R.drawable.ic_samosa))
-        allFoodItems.add(FoodItem(10, "French Fries", 50, true, "Snacks", R.drawable.ic_fries))
-        allFoodItems.add(FoodItem(11, "Thums Up", 20, true, "Drinks", R.drawable.ic_thumbs_up))
-        allFoodItems.add(FoodItem(12, "Zeera Soda", 20, true, "Drinks", R.drawable.ic_zeera_soda))
-        allFoodItems.add(FoodItem(13, "Sprite", 20, false, "Drinks", R.drawable.ic_sprite))
+
+        // List of all 13 items with categories (supports items in multiple categories via comma separation)
+        val rawItems = listOf(
+            Triple("Biryani", 90 to "Lunch, Today's Special", R.drawable.ic_biryani),
+            Triple("Burger", 50 to "Snacks", R.drawable.ic_burger),
+            Triple("Coffee", 25 to "Drinks", R.drawable.ic_coffee),
+            Triple("Fried Rice", 70 to "Lunch", R.drawable.ic_fried_rice),
+            Triple("Fries", 50 to "Snacks", R.drawable.ic_fries),
+            Triple("Noodles", 60 to "Lunch", R.drawable.ic_noodles),
+            Triple("Samosa", 25 to "Snacks", R.drawable.ic_samosa),
+            Triple("Sandwich", 40 to "Snacks, Today's Special", R.drawable.ic_sandwich),
+            Triple("Wrap", 50 to "Snacks", R.drawable.ic_wrap),
+            Triple("Sprite", 20 to "Drinks", R.drawable.ic_sprite),
+            Triple("Thali", 80 to "Lunch, Today's Special", R.drawable.ic_thali),
+            Triple("Thumbs Up", 20 to "Drinks", R.drawable.ic_thumbs_up),
+            Triple("Zeera Soda", 15 to "Drinks", R.drawable.ic_zeera_soda)
+        )
+
+        var idCounter = 1
+        for ((name, info, drawable) in rawItems) {
+            val (defaultPrice, categories) = info
+
+            val currentPrice = sharedPref.getInt("menu_item_price_$name", defaultPrice)
+            val isAvailable = sharedPref.getBoolean("menu_item_stock_$name", true)
+
+            allFoodItems.add(
+                FoodItem(
+                    id = idCounter++,
+                    name = name,
+                    price = currentPrice,
+                    isAvailable = isAvailable,
+                    category = categories,
+                    imageResId = drawable
+                )
+            )
+        }
     }
 
     private fun filterCategory(category: String) {
+        currentCategory = category
         if (category == "All") {
             foodAdapter.updateList(allFoodItems)
         } else {
-            val filtered = allFoodItems.filter { it.category == category }
+            val filtered = allFoodItems.filter { it.category.contains(category) }
             foodAdapter.updateList(filtered)
         }
     }

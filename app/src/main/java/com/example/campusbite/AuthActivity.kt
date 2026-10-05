@@ -2,6 +2,7 @@ package com.example.campusbite
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -16,6 +17,7 @@ class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
     private var selectedImageUri: Uri? = null
+    private var isStaffSelected = false
 
     private val selectImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -35,19 +37,37 @@ class AuthActivity : AppCompatActivity() {
 
         setupDepartmentAndProgramSpinners()
 
+        // Tab selection listener
+        binding.btnTabStudent.setOnClickListener { selectStudentTab() }
+        binding.btnTabStaff.setOnClickListener { selectStaffTab() }
+
         binding.tvSwitchToSignup.setOnClickListener { showSignupStep1() }
         binding.tvSwitchToLogin.setOnClickListener { showLogin() }
+
+        // Initial tab styling setup
+        selectStudentTab()
 
         // Action: Login
         binding.btnLogin.setOnClickListener {
             val loginId = binding.etLoginId.text.toString().trim()
             val pass = binding.etLoginPassword.text.toString().trim()
 
-            if (loginId.isNotEmpty() && pass.isNotEmpty()) {
-                val nameFromEmail = loginId.substringBefore("@").replaceFirstChar { it.uppercase() }
-                saveLoginStateAndProceed(if (nameFromEmail.isNotEmpty()) nameFromEmail else "Student", "", "")
+            if (isStaffSelected) {
+                // Canteen Staff Validation
+                if (loginId == "mhsspcanteen@gmail.com" && pass == "00000") {
+                    Toast.makeText(this, "Welcome Canteen Staff!", Toast.LENGTH_SHORT).show()
+                    saveStaffLoginStateAndProceed()
+                } else {
+                    Toast.makeText(this, "Invalid Canteen Staff credentials!", Toast.LENGTH_LONG).show()
+                }
             } else {
-                Toast.makeText(this, "Please enter email/phone and password", Toast.LENGTH_SHORT).show()
+                // Regular Student Validation
+                if (loginId.isNotEmpty() && pass.isNotEmpty()) {
+                    val nameFromEmail = loginId.substringBefore("@").replaceFirstChar { it.uppercase() }
+                    saveLoginStateAndProceed(if (nameFromEmail.isNotEmpty()) nameFromEmail else "Student", "", "")
+                } else {
+                    Toast.makeText(this, "Please enter email/phone and password", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -114,6 +134,40 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
+    private fun selectStudentTab() {
+        isStaffSelected = false
+        // Dark Teal for active student tab
+        binding.btnTabStudent.setBackgroundColor(Color.parseColor("#005B5C"))
+        binding.btnTabStudent.setTextColor(Color.WHITE)
+
+        // Soft Light Green for inactive staff tab with clear white text
+        binding.btnTabStaff.setBackgroundColor(Color.parseColor("#A3D9A5"))
+        binding.btnTabStaff.setTextColor(Color.WHITE)
+
+        binding.tvHeaderSub.text = "Student Login"
+        binding.tvLoginLabel.text = "Email or Phone Number"
+        binding.etLoginId.hint = "e.g. student@college.edu / 9876543210"
+        binding.tvSwitchToSignup.visibility = View.VISIBLE
+        showLogin()
+    }
+
+    private fun selectStaffTab() {
+        isStaffSelected = true
+        // Dark Teal for active staff tab
+        binding.btnTabStaff.setBackgroundColor(Color.parseColor("#005B5C"))
+        binding.btnTabStaff.setTextColor(Color.WHITE)
+
+        // Soft Light Green for inactive student tab with clear white text
+        binding.btnTabStudent.setBackgroundColor(Color.parseColor("#A3D9A5"))
+        binding.btnTabStudent.setTextColor(Color.WHITE)
+
+        binding.tvHeaderSub.text = "Canteen Staff Login"
+        binding.tvLoginLabel.text = "Staff Email Address"
+        binding.etLoginId.hint = "mhsspcanteen@gmail.com"
+        binding.tvSwitchToSignup.visibility = View.GONE
+        showLogin()
+    }
+
     private fun setupDepartmentAndProgramSpinners() {
         val programs = arrayOf("Diploma", "Degree")
         val programAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, programs)
@@ -148,7 +202,6 @@ class AuthActivity : AppCompatActivity() {
         binding.containerSignupStep1.visibility = View.GONE
         binding.containerOtp.visibility = View.GONE
         binding.containerStudentDetails.visibility = View.GONE
-        binding.tvHeaderSub.text = "Student Login"
     }
 
     private fun showSignupStep1() {
@@ -163,18 +216,28 @@ class AuthActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
             .putBoolean("isLoggedIn", true)
+            .putBoolean("isStaff", false)
             .putString("userName", userName)
 
-        if (rollNo.isNotEmpty()) {
-            editor.putString("rollNo", rollNo)
-        }
-        if (enrollmentNo.isNotEmpty()) {
-            editor.putString("enrollmentNo", enrollmentNo)
-        }
+        if (rollNo.isNotEmpty()) editor.putString("rollNo", rollNo)
+        if (enrollmentNo.isNotEmpty()) editor.putString("enrollmentNo", enrollmentNo)
 
         editor.apply()
 
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun saveStaffLoginStateAndProceed() {
+        val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
+        sharedPref.edit()
+            .putBoolean("isLoggedIn", true)
+            .putBoolean("isStaff", true)
+            .putString("userName", "MHSSP Canteen Staff")
+            .apply()
+
+        val intent = Intent(this, VendorDashboardActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }
