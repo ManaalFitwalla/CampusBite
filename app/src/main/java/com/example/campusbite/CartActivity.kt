@@ -69,13 +69,16 @@ class CartActivity : AppCompatActivity() {
                 val totalAmount = CartManager.getTotal()
                 val randomOrderId = "CB-${(1000..9999).random()}"
 
-                // Save latest order in SharedPreferences for Profile screen retrieval
+                // Save latest active order in SharedPreferences for dynamic staff retrieval and student notifications
                 val sharedPref = getSharedPreferences("CampusBitePrefs", MODE_PRIVATE)
                 sharedPref.edit().apply {
+                    putBoolean("has_active_order", true)
                     putString("last_order_id", randomOrderId)
-                    putString("last_order_items", itemsSummary)
+                    putString("last_order_items", itemsSummary.replace("\n", ", "))
                     putInt("last_order_total", totalAmount)
                     putString("last_order_time", formattedTime)
+                    putString("last_order_status", "Preparing")
+                    putBoolean("status_notified", false)
                     apply()
                 }
 

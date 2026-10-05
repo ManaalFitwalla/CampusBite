@@ -136,13 +136,13 @@ class AuthActivity : AppCompatActivity() {
 
     private fun selectStudentTab() {
         isStaffSelected = false
-        // Dark Teal for active student tab
+        // Dark Teal background with White text for selected Active tab
         binding.btnTabStudent.setBackgroundColor(Color.parseColor("#005B5C"))
         binding.btnTabStudent.setTextColor(Color.WHITE)
 
-        // Soft Light Green for inactive staff tab with clear white text
+        // Light Green background with Dark Teal text for unselected Inactive tab
         binding.btnTabStaff.setBackgroundColor(Color.parseColor("#A3D9A5"))
-        binding.btnTabStaff.setTextColor(Color.WHITE)
+        binding.btnTabStaff.setTextColor(Color.parseColor("#005B5C"))
 
         binding.tvHeaderSub.text = "Student Login"
         binding.tvLoginLabel.text = "Email or Phone Number"
@@ -153,13 +153,13 @@ class AuthActivity : AppCompatActivity() {
 
     private fun selectStaffTab() {
         isStaffSelected = true
-        // Dark Teal for active staff tab
+        // Dark Teal background with White text for selected Active tab
         binding.btnTabStaff.setBackgroundColor(Color.parseColor("#005B5C"))
         binding.btnTabStaff.setTextColor(Color.WHITE)
 
-        // Soft Light Green for inactive student tab with clear white text
+        // Light Green background with Dark Teal text for unselected Inactive tab
         binding.btnTabStudent.setBackgroundColor(Color.parseColor("#A3D9A5"))
-        binding.btnTabStudent.setTextColor(Color.WHITE)
+        binding.btnTabStudent.setTextColor(Color.parseColor("#005B5C"))
 
         binding.tvHeaderSub.text = "Canteen Staff Login"
         binding.tvLoginLabel.text = "Staff Email Address"

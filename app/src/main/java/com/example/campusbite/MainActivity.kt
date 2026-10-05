@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -96,6 +97,27 @@ class MainActivity : AppCompatActivity() {
         updateCartBadge()
         setupFoodList()
         filterCategory(currentCategory)
+        checkOrderStatusNotification()
+    }
+
+    private fun checkOrderStatusNotification() {
+        val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
+        val hasActiveOrder = sharedPref.getBoolean("has_active_order", false)
+        val status = sharedPref.getString("last_order_status", "") ?: ""
+        val notified = sharedPref.getBoolean("status_notified", false)
+        val orderId = sharedPref.getString("last_order_id", "") ?: ""
+
+        if (hasActiveOrder && status == "Ready for Pickup" && !notified) {
+            AlertDialog.Builder(this)
+                .setTitle("🔔 Order Status Update")
+                .setMessage("Your Order #$orderId is now READY FOR PICKUP at the canteen!")
+                .setPositiveButton("OK") { dialog, _ ->
+                    sharedPref.edit().putBoolean("status_notified", true).apply()
+                    dialog.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+        }
     }
 
     private fun updateCartBadge() {

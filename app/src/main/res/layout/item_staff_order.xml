@@ -76,12 +76,13 @@
 
             <Button
                 android:id="@+id/btnUpdateStatus"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:layout_alignParentEnd="true"
                 android:backgroundTint="#005B5C"
+                android:paddingHorizontal="12dp"
                 android:text="Update Status"
+                android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />

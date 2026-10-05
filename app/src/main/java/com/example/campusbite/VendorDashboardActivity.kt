@@ -67,19 +67,40 @@ class VendorDashboardActivity : AppCompatActivity() {
 
     private fun loadLiveOrders() {
         val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
-        val orderId = sharedPref.getString("last_order_id", "CB-3884") ?: "CB-3884"
-        val items = sharedPref.getString("last_order_items", "Sandwich x1, Coffee x1") ?: "Sandwich x1, Coffee x1"
-        val studentName = sharedPref.getString("userName", "Fitwalla Manaal Abdul Hafeez") ?: "Fitwalla Manaal Abdul Hafeez"
-        val pickupTime = sharedPref.getString("last_order_time", "15:00") ?: "15:00"
-        val currentStatus = sharedPref.getString("last_order_status", "Preparing") ?: "Preparing"
+
+        // Persistent status support for static orders
+        val status1 = sharedPref.getString("static_order_1_status", "Preparing") ?: "Preparing"
+        val status2 = sharedPref.getString("static_order_2_status", "Preparing") ?: "Preparing"
 
         val ordersList = mutableListOf(
-            StaffOrder(orderId, studentName, items, pickupTime, currentStatus)
+            StaffOrder("CB-101", "Fitwalla Manaal Abdul Hafeez", "Coffee x1, Sandwich x1", "14:30", status1),
+            StaffOrder("CB-102", "Aarav Sharma", "Thali x1, Zeera Soda x1", "15:00", status2)
         )
+
+        // Dynamic Student Order retrieval
+        val hasActiveOrder = sharedPref.getBoolean("has_active_order", false)
+        if (hasActiveOrder) {
+            val orderId = sharedPref.getString("last_order_id", "CB-3884") ?: "CB-3884"
+            val items = sharedPref.getString("last_order_items", "Sandwich x1, Coffee x1") ?: "Sandwich x1, Coffee x1"
+            val studentName = sharedPref.getString("userName", "Fitwalla Manaal Abdul Hafeez") ?: "Fitwalla Manaal Abdul Hafeez"
+            val pickupTime = sharedPref.getString("last_order_time", "15:15") ?: "15:15"
+            val currentStatus = sharedPref.getString("last_order_status", "Preparing") ?: "Preparing"
+
+            ordersList.add(StaffOrder(orderId, studentName, items, pickupTime, currentStatus))
+        }
 
         binding.rvStaffOrders.layoutManager = LinearLayoutManager(this)
         binding.rvStaffOrders.adapter = StaffOrdersAdapter(ordersList) { updatedOrder ->
-            sharedPref.edit().putString("last_order_status", updatedOrder.status).apply()
+            when (updatedOrder.id) {
+                "CB-101" -> sharedPref.edit().putString("static_order_1_status", updatedOrder.status).apply()
+                "CB-102" -> sharedPref.edit().putString("static_order_2_status", updatedOrder.status).apply()
+                else -> {
+                    sharedPref.edit()
+                        .putString("last_order_status", updatedOrder.status)
+                        .putBoolean("status_notified", false)
+                        .apply()
+                }
+            }
             Toast.makeText(this, "Order #${updatedOrder.id} status updated to: ${updatedOrder.status}", Toast.LENGTH_SHORT).show()
         }
     }
