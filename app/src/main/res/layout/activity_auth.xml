@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f7f3"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="CampusBite"
+            android:textColor="#005B5C"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHeaderSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Student Login"
+            android:textColor="#222222"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 1. LOGIN CONTAINER -->
+                <LinearLayout
+                    android:id="@+id/containerLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email or Phone Number"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etLoginId"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="e.g. student@college.edu / 9876543210"
+                        android:inputType="textEmailAddress"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Password / PIN"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etLoginPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="••••••••"
+                        android:inputType="textPassword"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#005B5C"
+                        android:text="Login"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/tvSwitchToSignup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:text="New student? Register"
+                        android:textColor="#005B5C"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- 2. SIGNUP STEP 1: CREDENTIALS -->
+                <LinearLayout
+                    android:id="@+id/containerSignupStep1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email or Phone Number"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etSignupContact"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="Enter email or phone number"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Create Password"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etSignupPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="Create password"
+                        android:inputType="textPassword"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btnSendOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#005B5C"
+                        android:text="Send OTP"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/tvSwitchToLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:text="Already registered? Login"
+                        android:textColor="#005B5C"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- 3. SIGNUP STEP 2: OTP VERIFICATION -->
+                <LinearLayout
+                    android:id="@+id/containerOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter 4-Digit OTP"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:gravity="center"
+                        android:hint="Enter 1234"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:padding="12dp"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/btnVerifyOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#005B5C"
+                        android:text="Verify &amp; Continue"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+                <!-- 4. SIGNUP STEP 3: ACADEMIC & ID DETAILS -->
+                <LinearLayout
+                    android:id="@+id/containerStudentDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Program Type"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spDegreeDiploma"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Select Department"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spDept"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Select Year"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spYear"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp" />
+
+                    <!-- FULL NAME FIELD -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Full Name"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="Enter your full name"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Enrollment Number"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etEnrollmentNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="Enter Enrollment No."
+                        android:inputType="number"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Roll Number"
+                        android:textColor="#444444"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etRollNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:hint="Enter Roll No."
+                        android:inputType="number"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btnUploadIdCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="#555555"
+                        android:text="Upload Front Image of ID Card" />
+
+                    <ImageView
+                        android:id="@+id/imgIdCardPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="8dp"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnCompleteRegistration"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#005B5C"
+                        android:text="Complete Signup"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

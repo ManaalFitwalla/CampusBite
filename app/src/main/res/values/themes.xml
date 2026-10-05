@@ -1,0 +1,39 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme matching android:theme="@style/Theme.CampusBite" -->
+    <style name="Theme.CampusBite" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">#005B5C</item>
+        <item name="colorPrimaryVariant">#003B3C</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <!-- Secondary brand colors -->
+        <item name="colorSecondary">#005B5C</item>
+        <item name="colorSecondaryVariant">#003B3C</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">#005B5C</item>
+    </style>
+
+    <!-- Custom Green Theme for TimePickerDialog -->
+    <style name="GreenTimePickerTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">#005B5C</item>
+        <item name="colorAccent">#005B5C</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="buttonBarPositiveButtonStyle">@style/GreenDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/GreenDialogButton</item>
+        <item name="colorOnSurface">#222222</item>
+        <item name="colorOnSurfaceVariant">#005B5C</item>
+        <item name="shapeAppearanceCornerMedium">@style/RoundedCornersDialog</item>
+        <item name="dialogCornerRadius">16dp</item>
+    </style>
+
+    <style name="GreenDialogButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">#005B5C</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RoundedCornersDialog" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>

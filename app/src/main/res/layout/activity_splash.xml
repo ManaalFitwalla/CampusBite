@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F7F3"
+    android:padding="24dp">
+
+    <!-- Center Content Block -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Splash Illustration / Logo -->
+        <ImageView
+            android:id="@+id/imgSplashLogo"
+            android:layout_width="280dp"
+            android:layout_height="220dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="CampusBite Logo Illustration"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_splash_illustration" />
+
+        <!-- App Name -->
+        <TextView
+            android:id="@+id/tvAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="CampusBite"
+            android:textColor="#005B5C"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/tvTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="College Canteen Pre-Order"
+            android:textColor="#666666"
+            android:textSize="18sp" />
+
+        <!-- Sub-text Divider Line Indicator -->
+        <View
+            android:layout_width="80dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            android:background="#B2DFDB" />
+
+    </LinearLayout>
+
+    <!-- Bottom Caption -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:text="Skip the queue  •  Use your College ID"
+        android:textColor="#777777"
+        android:textSize="14sp" />
+
+</RelativeLayout>
