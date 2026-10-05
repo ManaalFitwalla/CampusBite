@@ -1,5 +1,6 @@
 package com.example.campusbite
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,16 +15,25 @@ class ReceiptActivity : AppCompatActivity() {
         binding = ActivityReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val orderId = intent.getStringExtra("ORDER_ID") ?: "#CB-0000"
-        val items = intent.getStringExtra("ITEMS") ?: ""
+        val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
+        val studentName = sharedPref.getString("userName", "Manaal") ?: "Manaal"
+        val rollNo = sharedPref.getString("rollNo", "2100520") ?: "2100520"
+        val enrollmentNo = sharedPref.getString("enrollmentNo", "EN2024-889") ?: "EN2024-889"
+
+        val orderId = intent.getStringExtra("ORDER_ID") ?: "CB-${(1000..9999).random()}"
+        val items = intent.getStringExtra("ITEMS") ?: "Veg Sandwich x1"
         val total = intent.getIntExtra("TOTAL", 0)
-        val pickupTime = intent.getStringExtra("PICKUP_TIME") ?: ""
+        val pickupTime = intent.getStringExtra("PICKUP_TIME") ?: "10:30 AM"
 
-        binding.tvReceiptOrderId.text = "Order ID: $orderId"
-        binding.tvReceiptItems.text = "Items: $items"
-        binding.tvReceiptTotal.text = "Total Amount: ₹$total"
-        binding.tvReceiptPickupTime.text = "Pickup Time Today: $pickupTime"
+        binding.tvReceiptOrderId.text = orderId
+        binding.tvStudentName.text = studentName
+        binding.tvRollNo.text = rollNo
+        binding.tvEnrollmentNo.text = enrollmentNo
+        binding.tvReceiptItems.text = items
+        binding.tvReceiptTotal.text = "₹$total"
+        binding.tvReceiptPickupTime.text = pickupTime
 
+        // Clear cart if opened from Cart flow
         CartManager.clearCart()
 
         binding.btnBackToHome.setOnClickListener {

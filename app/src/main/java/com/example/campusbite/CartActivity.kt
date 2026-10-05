@@ -62,7 +62,32 @@ class CartActivity : AppCompatActivity() {
             R.style.GreenTimePickerTheme,
             { _, selectedHour, selectedMinute ->
                 val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-                Toast.makeText(this, "Pickup time set to $formattedTime", Toast.LENGTH_SHORT).show()
+
+                val itemsSummary = CartManager.cartItems.joinToString("\n") { item ->
+                    "${item.name} x1"
+                }
+                val totalAmount = CartManager.getTotal()
+                val randomOrderId = "CB-${(1000..9999).random()}"
+
+                // Save latest order in SharedPreferences for Profile screen retrieval
+                val sharedPref = getSharedPreferences("CampusBitePrefs", MODE_PRIVATE)
+                sharedPref.edit().apply {
+                    putString("last_order_id", randomOrderId)
+                    putString("last_order_items", itemsSummary)
+                    putInt("last_order_total", totalAmount)
+                    putString("last_order_time", formattedTime)
+                    apply()
+                }
+
+                // Launch Receipt screen
+                val intent = Intent(this, ReceiptActivity::class.java).apply {
+                    putExtra("ORDER_ID", randomOrderId)
+                    putExtra("ITEMS", itemsSummary)
+                    putExtra("TOTAL", totalAmount)
+                    putExtra("PICKUP_TIME", formattedTime)
+                }
+                startActivity(intent)
+                finish()
             },
             hour,
             minute,
@@ -72,7 +97,6 @@ class CartActivity : AppCompatActivity() {
         timePickerDialog.setTitle("Select Pickup Time Today")
         timePickerDialog.show()
 
-        // Explicitly color the OK and Cancel buttons after showing
         val tealColor = android.graphics.Color.parseColor("#005B5C")
         timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)?.setTextColor(tealColor)
         timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)?.setTextColor(tealColor)
