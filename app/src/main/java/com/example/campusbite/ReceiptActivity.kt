@@ -15,16 +15,19 @@ class ReceiptActivity : AppCompatActivity() {
         binding = ActivityReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Read user data stored during registration/login
         val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
-        val studentName = sharedPref.getString("userName", "Manaal") ?: "Manaal"
-        val rollNo = sharedPref.getString("rollNo", "2100520") ?: "2100520"
-        val enrollmentNo = sharedPref.getString("enrollmentNo", "EN2024-889") ?: "EN2024-889"
+        val studentName = sharedPref.getString("userName", "Student") ?: "Student"
+        val rollNo = sharedPref.getString("rollNo", "N/A") ?: "N/A"
+        val enrollmentNo = sharedPref.getString("enrollmentNo", "N/A") ?: "N/A"
 
+        // Get intent extras passed from CartActivity or ProfileActivity
         val orderId = intent.getStringExtra("ORDER_ID") ?: "CB-${(1000..9999).random()}"
-        val items = intent.getStringExtra("ITEMS") ?: "Veg Sandwich x1"
+        val items = intent.getStringExtra("ITEMS") ?: "No Items"
         val total = intent.getIntExtra("TOTAL", 0)
-        val pickupTime = intent.getStringExtra("PICKUP_TIME") ?: "10:30 AM"
+        val pickupTime = intent.getStringExtra("PICKUP_TIME") ?: "--:--"
 
+        // Populate fields
         binding.tvReceiptOrderId.text = orderId
         binding.tvStudentName.text = studentName
         binding.tvRollNo.text = rollNo
@@ -33,7 +36,7 @@ class ReceiptActivity : AppCompatActivity() {
         binding.tvReceiptTotal.text = "₹$total"
         binding.tvReceiptPickupTime.text = pickupTime
 
-        // Clear cart if opened from Cart flow
+        // Clear active cart
         CartManager.clearCart()
 
         binding.btnBackToHome.setOnClickListener {

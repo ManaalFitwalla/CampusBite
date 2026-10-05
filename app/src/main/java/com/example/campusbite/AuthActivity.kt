@@ -45,7 +45,7 @@ class AuthActivity : AppCompatActivity() {
 
             if (loginId.isNotEmpty() && pass.isNotEmpty()) {
                 val nameFromEmail = loginId.substringBefore("@").replaceFirstChar { it.uppercase() }
-                saveLoginStateAndProceed(if (nameFromEmail.isNotEmpty()) nameFromEmail else "Student")
+                saveLoginStateAndProceed(if (nameFromEmail.isNotEmpty()) nameFromEmail else "Student", "", "")
             } else {
                 Toast.makeText(this, "Please enter email/phone and password", Toast.LENGTH_SHORT).show()
             }
@@ -110,7 +110,7 @@ class AuthActivity : AppCompatActivity() {
             }
 
             Toast.makeText(this, "Registration Complete!", Toast.LENGTH_SHORT).show()
-            saveLoginStateAndProceed(fullName)
+            saveLoginStateAndProceed(fullName, roll, enroll)
         }
     }
 
@@ -159,12 +159,20 @@ class AuthActivity : AppCompatActivity() {
         binding.tvHeaderSub.text = "Create Student Account"
     }
 
-    private fun saveLoginStateAndProceed(userName: String) {
+    private fun saveLoginStateAndProceed(userName: String, rollNo: String = "", enrollmentNo: String = "") {
         val sharedPref = getSharedPreferences("CampusBitePrefs", Context.MODE_PRIVATE)
-        sharedPref.edit()
+        val editor = sharedPref.edit()
             .putBoolean("isLoggedIn", true)
             .putString("userName", userName)
-            .apply()
+
+        if (rollNo.isNotEmpty()) {
+            editor.putString("rollNo", rollNo)
+        }
+        if (enrollmentNo.isNotEmpty()) {
+            editor.putString("enrollmentNo", enrollmentNo)
+        }
+
+        editor.apply()
 
         startActivity(Intent(this, MainActivity::class.java))
         finish()

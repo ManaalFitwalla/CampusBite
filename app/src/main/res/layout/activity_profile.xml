@@ -51,7 +51,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Current Order Status Card -->
+    <!-- Current Order Status Header -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,10 +61,26 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- Fallback Text When No Orders Exist -->
+    <TextView
+        android:id="@+id/tvNoActiveOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="No active orders at the moment."
+        android:textColor="#777777"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <!-- Current Order Status Card -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardActiveOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp">
 
@@ -103,6 +119,7 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/tvOrderItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -111,6 +128,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tvPickupTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
